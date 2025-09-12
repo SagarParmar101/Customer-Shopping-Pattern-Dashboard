@@ -40,7 +40,7 @@ This project delivers a comprehensive business intelligence solution using Excel
 - **Customer Analysis**: Prepared repeat and unique customer logic for portfolio expansion
 
 ### Dashboard Architecture
-- **Platform**: Excel 2016 with PivotTables, PivotCharts, Slicers, and Timeline
+- **Platform**: Excel with PivotTables, PivotCharts, Slicers, and Timeline
 - **Design System**: High-contrast KPI cards with consistent color accents for readability
 - **Interactivity**: Connected slicers and timeline for seamless cross-filtering
 
@@ -75,8 +75,6 @@ Customer-Shopping-Patterns-Dashboard/
 │   └── customer_shopping_data.csv
 ├── screenshots/
 │   ├── dashboard_overview.png
-│   ├── kpi_cards.png
-│   └── interactive_filters.png
 └── documentation/
     └── project_report.pdf
 ```
@@ -120,9 +118,7 @@ Customer-Shopping-Patterns-Dashboard/
 ## 📧 Contact
 
 Connect with me for questions about this project or collaboration opportunities:
-- **LinkedIn**: [Your LinkedIn Profile]
-- **Email**: [Your Email]
-- **Portfolio**: [Your Portfolio Website]
+- **LinkedIn**: [www.linkedin.com/in/sagar-parmar2025]
 
 ---
 
