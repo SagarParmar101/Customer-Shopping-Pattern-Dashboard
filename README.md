@@ -104,7 +104,7 @@ Customer-Shopping-Patterns-Dashboard/
 
 ## 📸 Screenshots
 
-*Add screenshots of your dashboard here to showcase the visual components*
+![dashboard](https://github.com/SagarParmar101/customer-shopping-dashboard/blob/a683e7b9becc1bae937a738f18d403880bb2fd85/customer-shopping-dashboard.PNG)
 
 ## 📄 Documentation
 
