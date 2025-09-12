@@ -106,8 +106,8 @@ Customer-Shopping-Patterns-Dashboard/
 
 ## 📄 Documentation
 
-- [Project Report](documentation/project_report.pdf) - Detailed analysis and findings
-- [Dashboard Screenshots](screenshots/) - Visual overview of all components
+- [Project Report](https://github.com/SagarParmar101/customer-shopping-dashboard/blob/4eed886ab7566a90b4f608b4db61dfbea2759e7c/project_report.pdf) - Detailed analysis and findings
+- [Dashboard Screenshots](#screenshots) - Visual overview of all components
 
 ## 📋 Data Citation
 
