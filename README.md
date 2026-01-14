@@ -3,6 +3,7 @@
 An interactive Excel dashboard analyzing retail transaction data from major Istanbul malls (2021-2023) to provide actionable insights on sales performance, customer behavior, and payment trends.
 
 ## Dashboard Demo (Power BI)
+![Customer Shopping Patterns Portfolio Dashboard](https://github.com/user-attachments/assets/bef7b717-0e1a-4254-b900-dc5e6fcb8a72)
 
 
 ## 🎯 Project Overview
