@@ -1,130 +1,76 @@
-# Customer Shopping Patterns Portfolio Dashboard
+# Customer Shopping Patterns: Istanbul Malls (2021 - 2023)
 
-An interactive Excel dashboard analyzing retail transaction data from major Istanbul malls (2021-2023) to provide actionable insights on sales performance, customer behavior, and payment trends.
+An interactive Looker Studio dashboard, plus the Python and SQL analysis behind it, built on 99,457 retail transactions from 10 shopping malls in Istanbul.
 
-## Dashboard Demo (Power BI)
-![Customer Shopping Patterns Portfolio Dashboard](https://github.com/user-attachments/assets/bef7b717-0e1a-4254-b900-dc5e6fcb8a72)
+**Live dashboard:** [Open in Looker Studio](https://datastudio.google.com/reporting/af819c05-980e-4ca0-a085-7312c2a706af) (works on phone and tablet, no login needed)
 
+![Page 1 - Executive Overview](dashboard_page1.png)
+![Page 2 - Category and Customer Insights](dashboard_page2.png)
 
-## 🎯 Project Overview
+## Business questions
 
-This project delivers a comprehensive business intelligence solution using Excel's advanced features to transform raw transaction data into an executive-ready dashboard. The solution emphasizes clean KPI design, intuitive filtering, and time-based analytics to support rapid business decision-making.
+1. How much revenue do the malls make, and from which categories?
+2. Which malls matter most?
+3. Do customers differ by age or gender in what they spend or how they pay?
+4. Are there seasonal patterns or a growth trend?
 
-## 📊 Dataset
+## Key findings
 
-- **Source**: Customer Shopping Dataset from Kaggle
-- **Size**: 99,457 transactions across 10 columns
-- **Coverage**: Invoice data, customer demographics, product categories, pricing, payment methods, dates, and mall locations
-- **Time Period**: 2021-2023
+| Finding | Number |
+|---|---|
+| Total revenue (Price x Quantity) | 251.5M TRY |
+| Transactions / average order value | 99,457 / 2,529 TRY |
+| Clothing, Shoes and Technology share of revenue | 95% (but only 50% of units sold) |
+| Cosmetics, Toys, Food & Beverage, Books, Souvenir share of revenue | about 5% (but 50% of units sold) |
+| Mall of Istanbul + Kanyon share of revenue | 40% |
+| Yearly revenue 2021 vs 2022 | 114.5M vs 115.4M TRY (+0.8%) |
 
-## 🎯 Objectives
+**Where the data shows no difference, I report it:**
+- Payment mix is almost identical in every age group (about 45% cash, 35% credit card, 20% debit card).
+- Women generate 60% of revenue because they make 60% of transactions. Average order value is the same (2,525 vs 2,534 TRY).
+- Monthly revenue is flat (about 9.6M TRY per month), so there is no clear seasonality.
+- Every Customer_ID appears only once, so repeat-purchase and RFM analysis are not possible with this dataset.
 
-- Build an executive-friendly dashboard summarizing revenue, purchasing activity, product mix, and customer segments
-- Enable rapid drill-down analysis by time, mall, category, age group, gender, and payment method
-- Provide interactive filtering capabilities for answering common retail questions without manual formula writing
+## Data audit: what I fixed from my first version
 
-## 🔍 Key Business Questions Answered
+My first version of this project (Excel and Power BI) calculated revenue as `SUM(Price)`. Price is the price per **unit**, so this ignored quantity.
 
-- What are total revenue, transaction volume, and average transaction value across the analysis period?
-- How do category performance, gender spending patterns, and payment methods contribute to overall sales?
-- What trends emerge when filtering by age groups, time periods, and customer segments?
+| Metric | First version (wrong) | Corrected |
+|---|---|---|
+| Total revenue | 68.5M | **251.5M TRY** |
+| Average order value | 689 | **2,529 TRY** |
 
-## 🛠️ Technical Implementation
+I also fixed these problems:
+- The currency was shown as "$". The dataset is in Turkish Lira (TRY).
+- March 2023 contains only 8 days of data, which made the monthly trend look like a sales crash. It is now flagged as a partial month.
+- Mall was never used in the first version. It is now a filter and a main chart.
+- Claims that the data does not support (seasonal spikes, young customers preferring digital payments, repeat-customer loyalty) were removed.
 
-### Data Preparation & Cleaning
-- **Date Standardization**: Converted mixed text and DMY/MDY formats into Excel date format for timeline analysis
-- **Custom Grouping**: Created Age Group bins (18-25, 26-35, 36-45, etc.) via helper columns for non-uniform slicer ranges
-- **Data Validation**: Ensured data integrity across all fields for accurate calculations
+## Method
 
-### Modeling & Calculations
-- **KPI Development**: Structured table formulas and PivotTables for core metrics
-  - Total Revenue = SUM(Price)
-  - Number of Transactions = COUNTA(Invoice_No)
-  - Average Transaction Value = Revenue ÷ Transactions
-- **Customer Analysis**: Prepared repeat and unique customer logic for portfolio expansion
+1. **Clean (Python, pandas):** removed the leading space in the ` price` column name, converted price text such as `"$1,500 "` to numbers, parsed dates (M/D/YYYY), created `revenue`, `age_group` and `month`. Checks: 0 missing values, 0 duplicate invoices.
+2. **Analyse (SQL, DuckDB):** five queries in `analysis_queries.sql` for KPIs, mall share, category value vs volume, payment mix by age group and yearly revenue.
+3. **Visualise (Looker Studio):** a two-page report with report-level filters for date, mall, category, payment method, gender and age group.
 
-### Dashboard Architecture
-- **Platform**: Excel with PivotTables, PivotCharts, Slicers, and Timeline
-- **Design System**: High-contrast KPI cards with consistent color accents for readability
-- **Interactivity**: Connected slicers and timeline for seamless cross-filtering
+## Files
 
-## 📈 Dashboard Features
+| File | What it is |
+|---|---|
+| `shopping_clean.csv` | Cleaned dataset used by the dashboard |
+| `customer_shopping_data.csv` | Original Kaggle data |
+| `shopping_analysis.ipynb` | Cleaning and SQL analysis notebook |
+| `analysis_queries.sql` | The five SQL queries |
+| `data_dictionary.md` | Column descriptions |
+| `dashboard_page1.png`, `dashboard_page2.png` | Dashboard screenshots |
 
-### Interactive Controls
-- **Slicers**: Age Group, Category, Gender, Payment Method for one-click segmentation
-- **Timeline**: Monthly and yearly exploration for seasonality analysis and period comparisons
+## Tools
 
-### Visual Components
-- **KPI Strip**: Total Revenue, Transaction Count, Average Transaction Value
-- **Charts**: 
-  - Top Category Performance (Bar Chart)
-  - Payment Method Distribution
-  - Gender Spending Analysis
-  - Monthly Sales Trends (Line Chart)
+Python (pandas), SQL (DuckDB), Google Sheets, Looker Studio.
 
-## 💡 Key Insights & Analytics
+## Data source
 
-- Clear visualization of dominant spending categories and their performance trends
-- Payment preference patterns across different customer segments
-- Gender and age group response analysis across various time windows
-- Real-time filter propagation enabling fast, iterative analysis for retail decision cycles
+Kaggle: [Customer Shopping Dataset - Retail Sales Data](https://www.kaggle.com/datasets/mehmettahiraslan/customer-shopping-dataset). The data looks synthetic (very evenly spread), so the findings describe this dataset, not real Istanbul retail.
 
-## 📁 Repository Structure
+## Contact
 
-```
-Customer-Shopping-Patterns-Dashboard/
-├── README.md
-├── Customer_Shopping_Data_Dashboard.xlsx
-├── data/
-│   └── customer_shopping_data.csv
-├── screenshots/
-│   ├── dashboard_overview.png
-└── documentation/
-    └── project_report.pdf
-```
-
-## 🚀 Getting Started
-
-1. **Download**: Clone this repository or download the Excel file directly
-2. **Open**: Launch `Customer_Shopping_Data_Dashboard.xlsx` in Excel 2016 or later
-3. **Refresh**: Refresh data connections if prompted
-4. **Explore**: Use slicers and timeline to filter and analyze data interactively
-
-## 🔄 How to Extend
-
-1. **New Data**: Replace or append new transactions following the same schema
-2. **Additional Periods**: Extend timeline analysis for new time ranges
-3. **New Retailers**: Adapt the model for different retail datasets
-4. **Advanced Features**: Add calculated fields or measures for deeper analysis
-
-## 💼 Skills Demonstrated
-
-- **Data Analysis**: Excel data cleaning, date normalization, custom grouping
-- **Business Intelligence**: PivotTables/Charts, slicers, timeline implementation
-- **Dashboard Design**: Executive reporting standards, KPI engineering
-- **Interactive Development**: Formula-driven calculations, cross-filtering capabilities
-
-## 📸 Screenshots
-
-![dashboard](https://github.com/SagarParmar101/customer-shopping-dashboard/blob/a683e7b9becc1bae937a738f18d403880bb2fd85/customer-shopping-dashboard.PNG)
-
-## 📄 Documentation
-
-- [Project Report](https://github.com/SagarParmar101/customer-shopping-dashboard/blob/4eed886ab7566a90b4f608b4db61dfbea2759e7c/project_report.pdf) - Detailed analysis and findings
-- [Dashboard Screenshots](#screenshots) - Visual overview of all components
-
-## 📋 Data Citation
-
-**Dataset**: "Customer Shopping Dataset – Retail Sales Data"  
-**Source**: Kaggle  
-**URL**: https://www.kaggle.com/datasets/mehmettahiraslan/customer-shopping-dataset
-
-## 📧 Contact
-
-Connect with me for questions about this project or collaboration opportunities:
-- **LinkedIn**: [www.linkedin.com/in/sagar-parmar2025]
-- **Portfolio**: [https://sagarparmar101.github.io/]
-
----
-
-*This project demonstrates advanced Excel capabilities in business intelligence and data visualization, showcasing skills relevant to data analyst and business intelligence roles.*
+Sagar Parmar | [LinkedIn](https://www.linkedin.com/in/sagar-parmar2025) | [Portfolio](https://sagarparmar.pages.dev)
